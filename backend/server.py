@@ -141,7 +141,15 @@ async def get_current_user(request: Request, credentials: HTTPAuthorizationCrede
     
     # Verify session in database
     session_data = await db.user_sessions.find_one({"session_token": session_token})
-    if not session_data or session_data["expires_at"] < datetime.now(timezone.utc):
+    if not session_data:
+        return None
+    
+    # Handle timezone comparison
+    expires_at = session_data["expires_at"]
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+    
+    if expires_at < datetime.now(timezone.utc):
         return None
     
     # Get user data
