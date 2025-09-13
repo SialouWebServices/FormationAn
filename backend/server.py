@@ -460,8 +460,8 @@ async def get_dashboard(user: User = Depends(get_current_user)):
         "completed_competences": completed_competences,
         "in_progress_competences": in_progress_competences,
         "certificates_earned": len(certificates),
-        "progress_list": progress_list,
-        "certificates": certificates
+        "progress_list": [UserProgress(**p).dict() for p in progress_list],
+        "certificates": [Certificate(**c).dict() for c in certificates]
     }
 
 # Initialize data
