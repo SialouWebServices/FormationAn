@@ -253,8 +253,8 @@ class RIANBackendTester:
         # Test chat without auth
         try:
             session_id = "test_session_123"
-            chat_data = {"message": "Bonjour, pouvez-vous m'aider?"}
-            async with self.session.post(f"{BACKEND_URL}/workshop/{session_id}/chat", json=chat_data) as response:
+            message = "Bonjour, pouvez-vous m'aider?"
+            async with self.session.post(f"{BACKEND_URL}/workshop/{session_id}/chat", params={"message": message}) as response:
                 if response.status == 401:
                     self.log_test("AI Workshop Chat (Unauthenticated)", True, "Correctly requires authentication")
                 else:
